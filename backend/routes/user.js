@@ -6,12 +6,12 @@ const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Register user
+
 router.post('/register', async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
-    // Check if user already exists
+   
     const userExists = await User.findOne({ username });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
@@ -31,7 +31,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login user
+
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -61,17 +61,17 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Protected route for admin
+
 router.get('/admin', protect, authorize('admin'), (req, res) => {
   res.json({ message: 'Welcome Admin' });
 });
 
-// Protected route for moderator
+
 router.get('/moderator', protect, authorize('admin', 'moderator'), (req, res) => {
   res.json({ message: 'Welcome Moderator' });
 });
 
-// Protected route for general users
+
 router.get('/user', protect, authorize('admin', 'moderator', 'user'), (req, res) => {
   res.json({ message: 'Welcome User' });
 });
